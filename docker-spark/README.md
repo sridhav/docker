@@ -3,10 +3,10 @@
 #### Pull image
 ` docker pull sridhav/spark`
 
-#### Run hbase (interactive mode)
+#### Run spark (interactive mode)
 ` docker run -p 8080:8080 -p 7077:7077 -it sridhav/spark`
 
-#### Run Hbase (detached mode)
+#### Run spark (detached mode)
 ` docker run -p 8080:8080 -p 7077:7077 -d -t sridhav/spark`
 
 #### Exposed ports
