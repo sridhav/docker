@@ -23,5 +23,3 @@ RUN wget -q http://downloads.sourceforge.net/project/cyclops-group/jmxterm/1.0-a
 ADD ./my_init.sh /sbin/my_init.sh
 
 RUN chmod +x /sbin/my_init.sh
-
-CMD /sbin/my_init.sh
