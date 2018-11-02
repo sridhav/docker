@@ -11,10 +11,8 @@ RUN wget http://mirrors.estointernet.in/apache/maven/maven-3/3.5.4/binaries/apac
 
 RUN tar xvzf /opt/apache-maven-3.5.4-bin.tar.gz -C /opt/ && mv /opt/apache-maven-3.5.4 /opt/maven
 
-RUN echo -e "export M2_HOME=/opt/maven\nexport PATH=\${M2_HOME}/bin:\${PATH}" >> /etc/profile.d/maven.sh
+ENV M2_HOME /opt/maven
 
-RUN chmod +x /etc/profile.d/maven.sh
-
-RUN source /etc/profile.d/maven.sh
+ENV PATH $PATH:${M2_HOME}/bin
 
 RUN mvn -version
