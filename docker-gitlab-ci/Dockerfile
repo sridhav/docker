@@ -17,4 +17,4 @@ RUN chmod +x /etc/profile.d/maven.sh
 
 RUN source /etc/profile.d/maven.sh
 
-RUN mvn --version
+RUN mvn -version
