@@ -16,3 +16,5 @@ ENV JAVA_HOME /usr/lib/jvm/java/
 ENV M2_HOME /opt/maven
 
 ENV PATH $PATH:${M2_HOME}/bin
+
+RUN yum -y install openssh-clients
