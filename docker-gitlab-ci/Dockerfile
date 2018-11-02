@@ -14,5 +14,3 @@ RUN tar xvzf /opt/apache-maven-3.5.4-bin.tar.gz -C /opt/ && mv /opt/apache-maven
 ENV M2_HOME /opt/maven
 
 ENV PATH $PATH:${M2_HOME}/bin
-
-RUN mvn -version
