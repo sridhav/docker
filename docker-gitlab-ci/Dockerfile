@@ -11,6 +11,8 @@ RUN wget http://mirrors.estointernet.in/apache/maven/maven-3/3.5.4/binaries/apac
 
 RUN tar xvzf /opt/apache-maven-3.5.4-bin.tar.gz -C /opt/ && mv /opt/apache-maven-3.5.4 /opt/maven
 
+ENV JAVA_HOME /usr/lib/jvm/java/
+
 ENV M2_HOME /opt/maven
 
 ENV PATH $PATH:${M2_HOME}/bin
