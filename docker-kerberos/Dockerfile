@@ -12,6 +12,6 @@ COPY krb5.conf /etc/
 
 COPY run.sh /tmp/run.sh
 
-RUN mkdir -p /var/keytabs && mkdir -p /var/tls && chmod +x /tmp/run.sh 
+RUN chmod +x /tmp/run.sh 
 
-CMD ["sh", "/tmp/run.sh"]
+CMD ["/bin/bash", "-c", "/tmp/run.sh -d /var/security -v 365 kafka zookeeper client"]
