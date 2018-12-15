@@ -10,4 +10,4 @@ RUN wget -q --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3
 
 RUN rpm -Uvh jdk-8u60-linux-x64.rpm && javac -version && java -version && rm -rf jdk-8u60-linux-x64.rpm
 
-RUN rpm -Uvh  https://packages.chef.io/files/stable/chefdk/1.1.16/el/7/chefdk-1.1.16-1.el7.x86_64.rpm
+RUN rpm -Uvh  https://packages.chef.io/files/stable/chefdk/1.1.16/el/7/chefdk-1.1.16-1.el7.x86_64.rpm 
