@@ -8,9 +8,9 @@ RUN apt-get update
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install krb5-admin-server krb5-kdc krb5-user default-jre
 
-COPY krb5.conf /etc/
+ADD ./krb5.conf /etc/
 
-COPY run.sh /tmp/run.sh
+ADD ./run.sh /tmp/run.sh
 
 RUN chmod +x /tmp/run.sh 
 
