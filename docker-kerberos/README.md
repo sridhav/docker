@@ -4,8 +4,9 @@ This docker container starts up a KDC server. It also generates tls certs for th
 
 The command listed in the docker container is used to start KDC server, generates certs and keytabs.
 
-certs are generated in <SECURITY_DIRECTORY>/tls/
-keytabs are generated in <SECURITY_DIRECTORY>/keytabs/
+certs are generated in `<SECURITY_DIRECTORY>/tls/`
+
+keytabs are generated in `<SECURITY_DIRECTORY>/keytabs/`
 
 #### Command 
 
@@ -18,4 +19,4 @@ keytabs are generated in <SECURITY_DIRECTORY>/keytabs/
 ` docker run -p 88:7088 -it sridhav/kerberos`
 
 #### Run spark (detached mode)
-` docker run -p 88:7088 -d -t sridhav/spark`
+` docker run -p 88:7088 -d -t sridhav/kerberos`
