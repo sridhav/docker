@@ -17,12 +17,14 @@ SSL_PASSWORD="changeme"
 DIRECTORY="/var/security"
 VALIDITY="365"
 DOMAIN="leap.local"
-if ( ! getopts ":p:s:d:u:v:h" opt); then
-	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-u value) (-v value) -h arg1 arg2 ...";
+NAMESPACE=""
+ADD_SUB=""
+if ( ! getopts ":p:s:d:u:v:n:a:h" opt); then
+	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-u value) (-v value) (-n value) (-a value) -h arg1 arg2 ...";
 	exit $E_OPTERROR;
 fi
 
-while getopts ":p:s:d:u:v:h" opt; do
+while getopts ":p:s:d:u:v:n:a:h" opt; do
   case $opt in
     p)
       SASL_PASSWORD=$OPTARG
@@ -36,6 +38,14 @@ while getopts ":p:s:d:u:v:h" opt; do
     u)
       DOMAIN=$OPTARG
       DOMAIN=`echo $DOMAIN | tr A-Z a-z`
+      ;;
+    n)
+      NAMESPACE="$OPTARG."
+      NAMESPACE=`echo $NAMESPACE | tr A-Z a-z`
+      ;;
+    a)
+      ADD_SUB="$OPTARG."
+      ADD_SUB=`echo $ADD_SUB | tr A-Z a-z`
       ;;
     v)
       VALIDITY=$OPTARG
@@ -92,6 +102,10 @@ gen_keystore() {
 DOMAIN_C=`echo $DOMAIN | tr a-z A-Z`
 HOST=`hostname -s`
 
+sed -i "s/#ADD_SUB#/$ADD_SUB/g" /etc/krb5.conf
+
+sed -i "s/#NAMESPACE#/$NAMESPACE/g" /etc/krb5.conf
+ 
 sed -i "s/#HOST#/$HOST/g" /etc/krb5.conf
 
 sed -i "s/#DOMAIN#/$DOMAIN/g" /etc/krb5.conf
@@ -105,8 +119,8 @@ mkdir -p $DIRECTORY/{keytabs,tls}
 gen_truststore
 
 for var in "$@"; do
-  /usr/sbin/kadmin.local -q "addprinc -randkey $var/$var.$DOMAIN"
-  /usr/sbin/kadmin.local -q "ktadd -k $DIRECTORY/keytabs/$var.keytab $var/$var.$DOMAIN"
+  /usr/sbin/kadmin.local -q "addprinc -randkey $var/$var.$NAMESPACE$ADD_SUB$DOMAIN"
+  /usr/sbin/kadmin.local -q "ktadd -k $DIRECTORY/keytabs/$var.keytab $var/$var.$NAMESPACE$ADD_SUB$DOMAIN"
   gen_keystore $var
 done
 

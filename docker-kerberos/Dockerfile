@@ -18,4 +18,4 @@ EXPOSE 88
 
 EXPOSE 754
 
-CMD ["/bin/bash", "-c", "/tmp/run.sh -d /var/security -u leap.local -v 365 kafka zookeeper client"]
+CMD ["/bin/bash", "-c", "/tmp/run.sh -d /var/security -a svc -n minikube -u cluster.local -v 365 kafka zookeeper client"]
