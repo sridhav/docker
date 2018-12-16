@@ -102,6 +102,8 @@ gen_keystore() {
 DOMAIN_C=`echo $DOMAIN | tr a-z A-Z`
 HOST=`hostname -s`
 
+sed -i "s/EXAMPLE.COM/$DOMAIN_C/g" /etc/krb5kdc/kdc.conf
+
 sed -i "s/#ADD_SUB#/$ADD_SUB/g" /etc/krb5.conf
 
 sed -i "s/#NAMESPACE#/$NAMESPACE/g" /etc/krb5.conf
