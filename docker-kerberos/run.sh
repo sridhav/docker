@@ -84,6 +84,7 @@ gen_keystore() {
   keytool -keystore $DIRECTORY/tls/$1.keystore.jks -alias CARoot -import -file $DIRECTORY/tls/$1.cert-signed -keypass $SSL_PASSWORD -storepass $SSL_PASSWORD -no-prompt
 }
 
+cp /etc/krb5.conf $DIRECTORY/krb5.conf
 
 /usr/sbin/kdb5_util -P changeme create -s
 mkdir -p $DIRECTORY/{keytabs,tls}
