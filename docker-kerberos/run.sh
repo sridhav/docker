@@ -16,12 +16,13 @@ SASL_PASSWORD="changeme"
 SSL_PASSWORD="changeme"
 DIRECTORY="/var/security"
 VALIDITY="365"
-if ( ! getopts ":p:s:d:v:h" opt); then
-	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-v value) -h arg1 arg2 ...";
+DOMAIN="leap.local"
+if ( ! getopts ":p:s:d:u:v:h" opt); then
+	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-u value) (-v value) -h arg1 arg2 ...";
 	exit $E_OPTERROR;
 fi
 
-while getopts ":p:s:d:v:h" opt; do
+while getopts ":p:s:d:u:v:h" opt; do
   case $opt in
     p)
       SASL_PASSWORD=$OPTARG
@@ -31,6 +32,10 @@ while getopts ":p:s:d:v:h" opt; do
       ;;
     d)
       DIRECTORY=$OPTARG
+      ;;
+    u)
+      DOMAIN=$OPTARG
+      DOMAIN=`echo $DOMAIN | tr A-Z a-z`
       ;;
     v)
       VALIDITY=$OPTARG
@@ -84,6 +89,15 @@ gen_keystore() {
   keytool -keystore $DIRECTORY/tls/$1.keystore.jks -alias CARoot -import -file $DIRECTORY/tls/$1.cert-signed -keypass $SSL_PASSWORD -storepass $SSL_PASSWORD -no-prompt
 }
 
+DOMAIN_C=`echo $DOMAIN | tr a-z A-Z`
+HOST=`hostname -s`
+
+sed -i "s/#HOST#/$HOST/g" /etc/krb5.conf
+
+sed -i "s/#DOMAIN#/$DOMAIN/g" /etc/krb5.conf
+
+sed -i "s/#DOMAIN_C#/$DOMAIN_C/g" /etc/krb5.conf
+
 cp /etc/krb5.conf $DIRECTORY/krb5.conf
 
 /usr/sbin/kdb5_util -P changeme create -s
@@ -91,8 +105,8 @@ mkdir -p $DIRECTORY/{keytabs,tls}
 gen_truststore
 
 for var in "$@"; do
-  /usr/sbin/kadmin.local -q "addprinc -randkey $var/$var.leap.local"
-  /usr/sbin/kadmin.local -q "ktadd -k $DIRECTORY/keytabs/$var.keytab $var/$var.leap.local"
+  /usr/sbin/kadmin.local -q "addprinc -randkey $var/$var.$DOMAIN"
+  /usr/sbin/kadmin.local -q "ktadd -k $DIRECTORY/keytabs/$var.keytab $var/$var.$DOMAIN"
   gen_keystore $var
 done
 
