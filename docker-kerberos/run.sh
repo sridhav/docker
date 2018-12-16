@@ -19,12 +19,14 @@ VALIDITY="365"
 DOMAIN="leap.local"
 NAMESPACE=""
 ADD_SUB=""
-if ( ! getopts ":p:s:d:u:v:n:a:h" opt); then
-	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-u value) (-v value) (-n value) (-a value) -h arg1 arg2 ...";
+HOST=`hostname -s`
+
+if ( ! getopts ":p:s:d:u:v:n:a:c:h" opt); then
+	echo "Usage: `basename $0` (-p value) (-s value) (-d value) (-u value) (-v value) (-n value) (-a value) (-c value) -h arg1 arg2 ...";
 	exit $E_OPTERROR;
 fi
 
-while getopts ":p:s:d:u:v:n:a:h" opt; do
+while getopts ":p:s:d:u:v:n:a:c:h" opt; do
   case $opt in
     p)
       SASL_PASSWORD=$OPTARG
@@ -46,6 +48,10 @@ while getopts ":p:s:d:u:v:n:a:h" opt; do
     a)
       ADD_SUB="$OPTARG."
       ADD_SUB=`echo $ADD_SUB | tr A-Z a-z`
+      ;;
+    c)
+      HOST=$OPTARG
+      HOST=`echo $HOST | tr A-Z a-z`
       ;;
     v)
       VALIDITY=$OPTARG
@@ -100,7 +106,6 @@ gen_keystore() {
 }
 
 DOMAIN_C=`echo $DOMAIN | tr a-z A-Z`
-HOST=`hostname -s`
 
 sed -i "s/EXAMPLE.COM/$DOMAIN_C/g" /etc/krb5kdc/kdc.conf
 
